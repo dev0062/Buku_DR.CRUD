@@ -167,6 +167,7 @@ namespace CRUDMahasiswaADO
                 string query = @"UPDATE Mahasiswa 
                                 SET Nama = @Nama, JenisKelamin = @JK, TanggalLahir = @TanggalLahir, Alamat = @Alamat, KodeProdi = @KodeProdi
                                 WHERE NIM = @NIM";
+
                 SqlCommand cmd = new SqlCommand(query, conn);
 
                 cmd.Parameters.AddWithValue("@NIM", txtNIM.Text);
@@ -195,6 +196,49 @@ namespace CRUDMahasiswaADO
             }
         }
 
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (conn.State == System.Data.ConnectionState.Closed)
+                {
+                    conn.Open();
+                }
 
+                DialogResult resultConfirm = MessageBox.Show(
+                    "Yakin ingin menghapus data?",
+                    "Konfirmasi",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (resultConfirm == DialogResult.Yes)
+                {
+                    string query = "DELETE FROM Mahasiswa WHERE NIM = @NIM";
+
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@NIM", txtNIM.Text);
+                    int result = cmd.ExecuteNonQuery();
+
+                    if (result > 0)
+                    {
+                        MessageBox.Show("Data  berhasil diUpdate");
+                        ClearForm();
+                        btnLoad.PerformClick();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Data tidak ditemukan");
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Terjadi kesalahan " + ex.Message);
+            }
+        }
+
+        
     }
 }
