@@ -255,6 +255,15 @@ namespace CRUDMahasiswaADO
             }
         }
 
+        private void ClearForm()
+        {
+            txtNIM.Clear();
+            txtNama.Clear();
+            cmbjk.SelectedIndex = -1;
+            txtAlamat.Clear();
+            dtpTanggalLahir.Value = DateTime.Now;
+            txtNIM.Focus();
+        }
+
         
-    }
 }
