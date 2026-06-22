@@ -33,6 +33,46 @@ namespace CRUDMahasiswaADO
             return localIP;
         }
 
+
+        public static string GetConnectionString()
+        {
+            string ipKita = GetLocalIPAddress();
+
+            // Tambahkan \\DEV persis di belakang pemanggilan IP
+            string connectionString = $"Data Source={ipKita}\\DEV;Initial Catalog=DBAkademikADO;User ID=sa;Password=Andalusia2112006;";
+
+            return connectionString;
+        }
+
+        SqlConnection conn = new SqlConnection(GetConnectionString());
+        SqlDataAdapter da;
+        DataTable dtMahasiswa;
+        DataTable dtProdi;
+
+
+        public int CountMhs()
+        {
+            if (conn.State == ConnectionState.Closed)
+            {
+                conn.Open();
+            }
+
+            SqlCommand cmd = new SqlCommand("sp_CountMahasiswa", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            SqlParameter outputParam = new SqlParameter("@Total", SqlDbType.Int);
+            outputParam.Direction = ParameterDirection.Output;
+
+            cmd.Parameters.Add(outputParam);
+
+            cmd.ExecuteNonQuery();
+
+            return Convert.ToInt32(outputParam.Value);
+        }
+
+       
+
+
     }
 
 }
